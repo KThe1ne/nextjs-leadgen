@@ -1,11 +1,11 @@
 const { NextRequest, NextResponse } = require("next/server");
-import leadGenIdeas  from "@/utils.mjs";
+import leadGenIdeas  from "@/utils.js";
 
 export async function POST(req) {
     const businessDetails = await req?.text()
     console.log(businessDetails)
-    // const res = await leadGenIdeas(businessDetails) 
-    const res = `Software Lead Magnets:
+    const res = await leadGenIdeas(businessDetails) 
+    /* const res = `Software Lead Magnets:
     1. A spreadsheet that compares features of the home to similar homes in the local area.
     2. A comparison tool that shows what other homes in the local area have sold for.
     3. A virtual home staging app that allows users to view their home with different furniture and decorations.
@@ -39,6 +39,6 @@ export async function POST(req) {
     3. A sample portfolio of photographs from a professional photographer.
     4. A home staging kit with various decorations and furniture.
     5. A sample of paint colors to create a warm atmosphere in a home.
-    6. A posture assessment chart for homeowners to use when assessing their own home.` 
+    6. A posture assessment chart for homeowners to use when assessing their own home.`  */
     return NextResponse.json({res})
 }

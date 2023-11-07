@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 import { Tab } from "@headlessui/react";
@@ -10,6 +10,14 @@ import gridPattern from "../public/grid.svg";
 const Home = () => {
 	const [businessDetails, setBusinessDetails] = useState("");
 	const [leadGenIdeas, setLeadGenIdeas] = useState("");
+
+	const ideaTabs = useRef(null);
+
+	useEffect(() => {
+		if(leadGenIdeas !== "") {
+			ideaTabs.current?.scrollIntoView({ behavior: 'smooth' })
+		}
+	}, [leadGenIdeas])
 
 	const formatResponse = (res) => {
 		res = res.res;
@@ -62,44 +70,44 @@ const Home = () => {
 			</div>
 			{/* Form */}
 			<div className="flex justify-center flex-col gap-3 items-center">
-        <div className="flex content-center items-center justify-center w-full flex-col gap-10 h-screen">
-          <h2 className="font-extrabold text-6xl text-center h-max text-[#102F54]">
-            LEAD GEN AI
-          </h2>
-          <h1 className="font-medium text-2xl text-center h-max text-[#102F54] max-w-lg">
-            Stand out from your competitors and attract more customers
-            with lead magnets that actually work.
-          </h1>
-          <div className="flex border-solid border-2  border-[#059C65] rounded-full h-14 w-1/3 overflow-hidden">
-            <input
-              type="text"
-              className="bg-transparent h-14 w-1/3 p-3 basis-10/12 flex-shrink-0 outline-none text-[#102F54]"
-              onChange={(e) => {
-                setBusinessDetails(e.target.value);
-                console.log(businessDetails);
-              }}
-            />
-            <button
-              className="bg-[#F46036] w-full flex justify-center items-center"
-              onClick={handleSubmit}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-6 h-6 text-white"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
+				<div className="flex content-center items-center justify-center w-full flex-col gap-10 h-screen">
+					<h2 className="font-extrabold text-6xl text-center h-max text-[#102F54]">
+						LEAD GEN AI
+					</h2>
+					<h1 className="font-medium text-2xl text-center h-max text-[#102F54] max-w-lg">
+						Stand out from your competitors and attract more
+						customers with lead magnets that actually work.
+					</h1>
+					<div className="flex border-solid border-2  border-[#059C65] rounded-full h-14 w-1/3 overflow-hidden">
+						<input
+							type="text"
+							className="bg-transparent h-14 w-1/3 p-3 basis-10/12 flex-shrink-0 outline-none text-[#102F54]"
+							onChange={(e) => {
+								setBusinessDetails(e.target.value);
+								console.log(businessDetails);
+							}}
+						/>
+						<button
+							className="bg-[#F46036] w-full flex justify-center items-center"
+							onClick={handleSubmit}
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 24 24"
+								fill="currentColor"
+								className="w-6 h-6 text-white"
+							>
+								<path
+									fillRule="evenodd"
+									d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z"
+									clipRule="evenodd"
+								/>
+							</svg>
+						</button>
+					</div>
+				</div>
 				{leadGenIdeas !== "" && (
-					<div className="flex flex-col items-center w-3/4 max-w-2xl mb-7">
+					<div ref={ideaTabs} className="flex flex-col items-center w-3/4 max-w-2xl mb-7">
 						<Tab.Group>
 							<Tab.List className="flex space-x-1 rounded-xl bg-[#059C65]/70 p-1 w-full">
 								{Object.keys(leadGenIdeas).map(
@@ -132,7 +140,8 @@ const Home = () => {
 												key={`leadGenIdeas-${idx}`}
 											>
 												<ul>
-													{leadGenIdeas.map((leadGenIdea, idx) => {
+													{leadGenIdeas.map(
+														(leadGenIdea, idx) => {
 															return (
 																<li
 																	className="relative rounded-md p-3 w-full hover:bg-white"
