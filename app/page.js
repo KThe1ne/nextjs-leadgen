@@ -41,7 +41,6 @@ const Home = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(businessDetails);
 		await fetch("/api", {
 			method: "POST",
 			body: businessDetails,
@@ -84,7 +83,6 @@ const Home = () => {
 							className="bg-transparent h-14 w-1/3 p-3 basis-10/12 flex-shrink-0 outline-none text-[#102F54]"
 							onChange={(e) => {
 								setBusinessDetails(e.target.value);
-								console.log(businessDetails);
 							}}
 						/>
 						<button
