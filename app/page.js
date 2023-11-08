@@ -43,7 +43,7 @@ const Home = () => {
 		e.preventDefault();
 		await fetch("/api/leadProblems", {
 			method: "POST",
-			body: businessDetails,
+			body: JSON.stringify(businessDetails),
 		})
 		.then((res) => {
 			const leadProblems = res.json();
@@ -53,7 +53,7 @@ const Home = () => {
 			console.log(leadProblems)
 			await fetch("/api/leadGenIdeas", {
 				method: "POST",
-				body: leadProblems,
+				body: JSON.stringify(leadProblems),
 			})
 			.then((res) => {
 				res = res.json()
