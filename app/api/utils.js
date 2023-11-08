@@ -71,4 +71,4 @@ const leadGenIdeas = async (business_details) => {
     return ideas
 }
 
-export default leadGenIdeas
+// export default leadGenIdeas

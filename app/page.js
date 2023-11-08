@@ -20,7 +20,7 @@ const Home = () => {
 	}, [leadGenIdeas])
 
 	const formatResponse = (res) => {
-		res = res.res;
+		res = res.leadMagnetIdeas;
 		const arr = res.split("\n");
 		let leadGenDict = {};
 		let leadGenMedium = "";
@@ -41,18 +41,30 @@ const Home = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		await fetch("/api", {
+		await fetch("/api/leadProblems", {
 			method: "POST",
 			body: businessDetails,
 		})
+		.then((res) => {
+			const leadProblems = res.json();
+			return leadProblems;
+		})
+		.then(async (leadProblems) => {
+			console.log(leadProblems)
+			await fetch("/api/leadGenIdeas", {
+				method: "POST",
+				body: leadProblems,
+			})
 			.then((res) => {
-				res = res.json();
+				res = res.json()
 				return res;
 			})
 			.then((res) => {
+				console.log(res)
 				const leadGenDict = formatResponse(res);
 				setLeadGenIdeas(leadGenDict);
 			});
+		})
 	};
 
 	return (
