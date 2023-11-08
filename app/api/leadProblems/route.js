@@ -1,9 +1,6 @@
 const { NextRequest, NextResponse } = require("next/server");
 import { findProblems }  from "../utils.js";
 
-
-// export const runtime = 'edge';
-
 export async function POST(req) {
     const businessDetails = await req?.json()
     console.log(businessDetails)

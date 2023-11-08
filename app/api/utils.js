@@ -10,6 +10,7 @@ dotenv.config();
 
 const model = new OpenAI({
     openAIApiKey: process.env.OPENAI_API_KEY,
+    modelName: "gpt-3.5-turbo-1106",
     temperature: 0.8,
     maxTokens: 2048
 });
@@ -17,7 +18,7 @@ const model = new OpenAI({
 export const findProblems = async (businessDetails) => {
 
     const prompt = new PromptTemplate({
-        template: "You are a business mastermind. You understand businesses and their intended customers. You understand all types of businesses, the services they offer and who they offer them to. Mostly important you understand the intended customers of these businesses, their want and needs, the broad and narrow problems they face. For example if the aim of the business is to help homeowners sell their houses (the broad solution), the homeowner(the intended customer) has the narrow problems of finding their home's worth, increasing the home value, getting pictures for listing, cleaning the house, landscaping, repairs, moving services, etc. Using your expertise you can 1. Describe the intended audience 2. Outline the narrow problems they may face before receiving the business' main services, given details about the business. Here are your instructions:{instructions}.",
+        template: "You are a business mastermind. You understand businesses and their intended customers. You understand all types of businesses, the services they offer and who they offer them to. Mostly important you understand the intended customers of these businesses, their want and needs, the broad and narrow problems they face. For example if the business' main service is to help homeowners sell their houses (the broad solution), the homeowner(the intended customer) has the narrow problems of finding their home's worth, increasing the home value, getting pictures for listing, cleaning the house, landscaping, repairs, moving services, etc. Using your expertise you can 1. Describe the intended audience 2. Outline the narrow problems they may face before receiving the business' main services, given details about the business. Here are your instructions:{instructions}.",
         inputVariables: ["instructions"],
     });
 
