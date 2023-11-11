@@ -1,17 +1,29 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 import { Tab } from "@headlessui/react";
 
 import diemmoLogo from "../public/diemmo-logo.svg";
 import gridPattern from "../public/grid.svg";
+import PopUpForm from "@/components/PopUpForm";
+
 
 const Home = () => {
 	const [businessDetails, setBusinessDetails] = useState("");
 	const [leadGenIdeas, setLeadGenIdeas] = useState("");
+	const [loading, setLoading] = useState(0)
+	const [isLeadInfoGiven, setIsLeadInfoGiven] = useState(false)
+	const [displayPopupForm, setDisplayPopupForm] = useState(false)
 
 	const ideaTabs = useRef(null);
+
+	useEffect(() => {
+		const leadInfo = localStorage.getItem('LGAI-LeadInfo');
+		if (leadInfo) {
+			setIsLeadInfoGiven(true);
+		}
+	}, [])
 
 	useEffect(() => {
 		if(leadGenIdeas !== "") {
@@ -26,14 +38,12 @@ const Home = () => {
 		let leadGenMedium = "";
 
 		arr.forEach((ele) => {
-			// console.log(ele)
 			if (!ele.trim().match(/^\d/) && ele.trim().endsWith(":")) {
 				leadGenMedium = ele.trim().slice(0, -1);
 				leadGenDict[leadGenMedium] = [];
 			} else if (leadGenMedium) {
 				leadGenDict[leadGenMedium].push(ele.trim());
 			}
-			// console.log(leadGenDict)
 		});
 
 		return leadGenDict;
@@ -41,6 +51,10 @@ const Home = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(1)
+		if (isLeadInfoGiven === false){
+			setDisplayPopupForm(true)
+		}
 		await fetch("/api/leadProblems", {
 			method: "POST",
 			body: JSON.stringify(businessDetails),
@@ -50,7 +64,7 @@ const Home = () => {
 			return leadProblems;
 		})
 		.then(async (leadProblems) => {
-			console.log(leadProblems)
+			setLoading(2)
 			await fetch("/api/leadGenIdeas", {
 				method: "POST",
 				body: JSON.stringify(leadProblems),
@@ -60,17 +74,44 @@ const Home = () => {
 				return res;
 			})
 			.then((res) => {
-				console.log(res)
 				const leadGenDict = formatResponse(res);
+				setLoading(0)
 				setLeadGenIdeas(leadGenDict);
 			});
 		})
 	};
 
+	const loadingElement = () => {
+		if (loading === 1) {
+			return (
+				<div className="flex min-w-[480px] gap-1 text-[#102F54]">
+					Evaluating your business...
+				</div>
+			)
+		}
+		if (loading === 2) {
+			return (
+				<div className="bg-red-800">Generating Ideas...</div>
+			)
+		}
+	}
+
+	const CtaButton = () => {
+		return (
+			<div className="bg-[#F46036] max-w-md w-max p-4 rounded-md">Generate Lead Magnet Ideas</div>
+		)
+	}
+
 	return (
-		<div>
+		<div className="overflow-y-auto">
+			{displayPopupForm && (
+				< PopUpForm 
+					setIsLeadInfoGiven={setIsLeadInfoGiven} 
+					isLeadInfoGiven={isLeadInfoGiven}
+				/>
+			)}
 			{/* Header */}
-			<div className="flex h-max py-3 px-3 w-full gap-3 items-center border-b-[1px] border-[#059C65] justify-center">
+			<div className="flex py-4 px-3 w-full gap-3 items-center border-b-[1px] border-[#102F54]/20 ">
 				<Image
 					src={diemmoLogo}
 					alt=""
@@ -81,11 +122,11 @@ const Home = () => {
 			</div>
 			{/* Form */}
 			<div className="flex justify-center flex-col gap-3 items-center">
-				<div className="flex content-center items-center justify-center w-full flex-col gap-10 h-screen">
-					<h2 className="font-extrabold text-6xl text-center h-max text-[#102F54]">
+				<div className="flex content-center items-center justify-center w-full flex-col gap-10 h-[calc(100vh-3.5rem)]">
+					<h2 className="font-extrabold text-6xl sm:text-5xl text-center h-max text-[#102F54]">
 						LEAD GEN AI
 					</h2>
-					<h1 className="font-medium text-2xl text-center h-max text-[#102F54] max-w-lg">
+					<h1 className="font-medium text-2xl sm:text-lg text-center h-max text-[#102F54] max-w-lg">
 						Stand out from your competitors and attract more
 						customers with lead magnets that actually work.
 					</h1>
@@ -96,6 +137,7 @@ const Home = () => {
 							onChange={(e) => {
 								setBusinessDetails(e.target.value);
 							}}
+							placeholder="Describe your business here..."
 						/>
 						<button
 							className="bg-[#F46036] w-full flex justify-center items-center"
@@ -115,9 +157,10 @@ const Home = () => {
 							</svg>
 						</button>
 					</div>
+					{loading ? loadingElement() : <CtaButton /> }
 				</div>
 				{leadGenIdeas !== "" && (
-					<div ref={ideaTabs} className="flex flex-col items-center w-3/4 max-w-2xl mb-7">
+					<div ref={ideaTabs} className="flex flex-col items-center w-3/4 max-w-2xl mb-7 min-h-screen justify-center">
 						<Tab.Group>
 							<Tab.List className="flex space-x-1 rounded-xl bg-[#059C65]/70 p-1 w-full">
 								{Object.keys(leadGenIdeas).map(
@@ -174,23 +217,6 @@ const Home = () => {
 					</div>
 				)}
 			</div>
-			{/* Result */}
-			{/* <div className='grid grid-cols-2 grid-rows-2 grid-flow-row-dense gap-3  justify-center center'>
-        {
-          Object.entries(leadGenIdeas).map((leadGen, i) => {
-            return (
-              <div className='bg-black text-white whitespace-pre-line rounded-xl p-4 h-max w-3/4' key={i}>
-                <h3>{leadGen[0]}</h3>
-                <div>
-                  {leadGen[1].map((idea) => (
-                    <div className='text-white'>{idea}</div>
-                ))}
-                </div>
-              </div>
-            )
-          })
-        }
-      </div> */}
 		</div>
 	);
 };

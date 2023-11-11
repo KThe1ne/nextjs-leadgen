@@ -1,11 +1,8 @@
 const { NextRequest, NextResponse } = require("next/server");
-import { findProblems }  from "../utils.js";
+import { findProblems } from "../../../utils.js";
 
 export async function POST(req) {
-    const businessDetails = await req?.json()
-    console.log(businessDetails)
-    const leadProblems = await findProblems(businessDetails) 
-    // const leadProblems = "Test"
-    console.log(`Lead Problems: ${leadProblems}`)
-    return NextResponse.json(leadProblems)
+	const businessDetails = await req?.json();
+	const leadProblems = await findProblems(businessDetails)
+	return NextResponse.json(leadProblems);
 }
