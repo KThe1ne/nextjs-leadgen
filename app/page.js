@@ -64,6 +64,7 @@ const Home = () => {
 			return leadProblems;
 		})
 		.then(async (leadProblems) => {
+			console.log(leadProblems)
 			setLoading(2)
 			await fetch("/api/leadGenIdeas", {
 				method: "POST",
