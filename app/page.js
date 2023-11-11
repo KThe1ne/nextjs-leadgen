@@ -19,7 +19,8 @@ const Home = () => {
 	const ideaTabs = useRef(null);
 
 	useEffect(() => {
-		const leadInfo = localStorage.getItem('LGAI-LeadInfo');
+		// const leadInfo = localStorage.getItem('LGAI-LeadInfo');
+		const leadInfo = false;
 		if (leadInfo) {
 			setIsLeadInfoGiven(true);
 		}
@@ -161,7 +162,7 @@ const Home = () => {
 					{loading ? loadingElement() : <CtaButton /> }
 				</div>
 				{leadGenIdeas !== "" && (
-					<div ref={ideaTabs} className="flex flex-col items-center w-3/4 max-w-2xl mb-7 min-h-screen justify-center">
+					<div ref={ideaTabs} className="flex flex-col items-center w-3/4 max-w-2xl md:w-full mb-7 min-h-screen justify-center mx-4">
 						<Tab.Group>
 							<Tab.List className="flex space-x-1 rounded-xl bg-[#059C65]/70 p-1 w-full">
 								{Object.keys(leadGenIdeas).map(
@@ -172,7 +173,7 @@ const Home = () => {
 													`w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-[#102F54] ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2 ${
 														selected
 															? "bg-white shadow"
-															: "text-blue-100 hover:bg-[#102F54]/[0.3] hover:text-white"
+															: "text-blue-100 hover:bg-[#102F54]/30 hover:text-white"
 													}`
 												}
 												key={leadGenMedium}

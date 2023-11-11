@@ -41,48 +41,49 @@ const PopUpForm = ({ setIsLeadInfoGiven, isLeadInfoGiven }) => {
 	return (
 		<div>
 			{isOpen && (
-				<div className="z-10 bg-black/20 w-full h-full fixed flex justify-center items-center">
-					<div className="bg-[#102F54] max-w-[600px] w-[400px] rounded-lg">
-						<div className="p-4 flex justify-center items-center text-center pb-0 text-2xl font-semibold">
-							<h3>
-								You are this 🤏 close to a ton of new leads.
-							</h3>
-						</div>
-						<form
-							className="text-[#059C65]/20 p-5 flex flex-col gap-4 font-medium"
-							onSubmit={handleSubmit}
-							ref={formRef}
-						>
-							<input
-								type="text"
-								name="fullName"
-								id="fullname"
-								placeholder="Your name"
-								className="p-3 rounded-md"
-							/>
-							<input
-								type="text"
-								name="email"
-								id="email"
-								placeholder="Your email"
-								className="p-3 rounded-md"
-							/>
-							<input
-								type="text"
-								name="phone"
-								id="phone"
-								placeholder="Your phone number"
-								className="p-3 rounded-md"
-							/>
-							<button
-								type="submit"
-								className="text-white font-bold bg-[#F46036] p-3 my-3 rounded-md uppercase"
-							>
-								Submit
-							</button>
-						</form>
-					</div>
-				</div>
+				<div className="z-10 w-full h-full fixed flex justify-center items-center">
+                    <div className="w-full h-full bg-[#102F54]/20 backdrop-blur-sm"></div>
+                    <div className="absolute z-20 bg-[#102F54] max-w-[600px] w-[400px] rounded-lg">
+                        <div className="p-4 flex justify-center items-center text-center pb-0 text-2xl font-semibold">
+                            <h3>
+                                You are this 🤏 close to a ton of new leads.
+                            </h3>
+                        </div>
+                        <form
+                            className="text-[#059C65]/20 p-5 flex flex-col gap-4 font-medium"
+                            onSubmit={handleSubmit}
+                            ref={formRef}
+                        >
+                            <input
+                                type="text"
+                                name="fullName"
+                                id="fullname"
+                                placeholder="Your name"
+                                className="p-3 rounded-md"
+                            />
+                            <input
+                                type="text"
+                                name="email"
+                                id="email"
+                                placeholder="Your email"
+                                className="p-3 rounded-md"
+                            />
+                            <input
+                                type="text"
+                                name="phone"
+                                id="phone"
+                                placeholder="Your phone number"
+                                className="p-3 rounded-md"
+                            />
+                            <button
+                                type="submit"
+                                className="text-white font-bold bg-[#F46036] p-3 my-3 rounded-md uppercase"
+                            >
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </div>
 			)}
 		</div>
 	);
