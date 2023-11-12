@@ -123,7 +123,7 @@ const Home = () => {
 				<span className="text-[#059C65] w-max font-bold">DIEMMO</span>
 			</div>
 			{/* Form */}
-			<div className="flex justify-center flex-col gap-3 items-center">
+			<div className="flex justify-center flex-col gap-3 items-center p-4">
 				<div className="flex content-center items-center justify-center w-full flex-col gap-10 h-[calc(100vh-3.5rem)]">
 					<h2 className="font-extrabold text-6xl sm:text-5xl text-center h-max text-[#102F54]">
 						LEAD GEN AI
@@ -132,10 +132,11 @@ const Home = () => {
 						Stand out from your competitors and attract more
 						customers with lead magnets that actually work.
 					</h1>
-					<div className="flex border-solid border-2  border-[#059C65] rounded-full h-14 w-1/3 overflow-hidden">
-						<input
+					<textarea name="businessDetails" id="" cols="30" rows="5" placeholder="Describe your business here..." className="border-2 resize-none p-3 rounded-md sm:w-full max-w-2xl w-full"></textarea>
+					{/* <div className="flex border-solid border-2  border-[#059C65] rounded-full h-14 w-1/3 overflow-hidden">
+						<textarea
 							type="text"
-							className="bg-transparent h-14 w-1/3 p-3 basis-10/12 flex-shrink-0 outline-none text-[#102F54]"
+							className="bg-transparent h-14 w-1/3 p-3 basis-10/12 flex-shrink-0 outline-none text-[#102F54] resize-none"
 							onChange={(e) => {
 								setBusinessDetails(e.target.value);
 							}}
@@ -158,11 +159,11 @@ const Home = () => {
 								/>
 							</svg>
 						</button>
-					</div>
+					</div> */}
 					{loading ? loadingElement() : <CtaButton /> }
 				</div>
 				{leadGenIdeas !== "" && (
-					<div ref={ideaTabs} className="flex flex-col items-center w-3/4 max-w-2xl md:w-full mb-7 min-h-screen justify-center mx-4">
+					<div ref={ideaTabs} className="flex flex-col items-center w-3/4 max-w-2xl sm:w-full mb-7 min-h-screen justify-center mx-4">
 						<Tab.Group>
 							<Tab.List className="flex space-x-1 rounded-xl bg-[#059C65]/70 p-1 w-full">
 								{Object.keys(leadGenIdeas).map(
