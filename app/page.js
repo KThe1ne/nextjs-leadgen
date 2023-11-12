@@ -100,7 +100,7 @@ const Home = () => {
 
 	const CtaButton = () => {
 		return (
-			<div className="bg-[#F46036] max-w-md w-max p-4 rounded-md">Generate Lead Magnet Ideas</div>
+			<div className="bg-[#F46036] max-w-md w-max p-4 rounded-md font-semibold">Generate Lead Magnet Ideas</div>
 		)
 	}
 
@@ -128,11 +128,11 @@ const Home = () => {
 					<h2 className="font-extrabold text-6xl sm:text-5xl text-center h-max text-[#102F54]">
 						LEAD GEN AI
 					</h2>
-					<h1 className="font-medium text-2xl sm:text-lg text-center h-max text-[#102F54] max-w-lg">
+					<h1 className="font-semibold text-2xl sm:text-lg text-center h-max text-[#102F54] max-w-lg">
 						Stand out from your competitors and attract more
 						customers with lead magnets that actually work.
 					</h1>
-					<textarea name="businessDetails" id="" cols="30" rows="5" placeholder="Describe your business here..." className="border-2 resize-none p-3 rounded-md sm:w-full max-w-2xl w-full"></textarea>
+					<textarea name="businessDetails" id="" cols="30" rows="5" placeholder="Describe your business here..." className="border-2 resize-none p-3 rounded-md sm:w-full max-w-2xl w-full text-[#102F54] ring-black/60 ring-offset-2" ></textarea>
 					{/* <div className="flex border-solid border-2  border-[#059C65] rounded-full h-14 w-1/3 overflow-hidden">
 						<textarea
 							type="text"
