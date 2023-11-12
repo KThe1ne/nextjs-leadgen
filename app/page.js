@@ -113,7 +113,7 @@ const Home = () => {
 				/>
 			)}
 			{/* Header */}
-			<div className="flex py-4 px-3 w-full gap-3 items-center border-b-[1px] border-[#102F54]/20 ">
+			<div className="flex py-4 px-3 w-full gap-3 h-16 items-center border-b-[1px] border-[#102F54]/20 ">
 				<Image
 					src={diemmoLogo}
 					alt=""
@@ -124,7 +124,7 @@ const Home = () => {
 			</div>
 			{/* Form */}
 			<div className="flex justify-center flex-col gap-3 items-center p-4">
-				<div className="flex content-center items-center justify-center w-full flex-col gap-10 h-[calc(100vh-3.5rem)]">
+				<div className="flex content-center items-center justify-center w-full flex-col gap-10 h-[calc(100vh-(4rem+16px))]">
 					<h2 className="font-extrabold text-6xl sm:text-5xl text-center h-max text-[#102F54]">
 						LEAD GEN AI
 					</h2>
