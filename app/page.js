@@ -17,10 +17,11 @@ const Home = () => {
 	const [displayPopupForm, setDisplayPopupForm] = useState(false)
 
 	const ideaTabs = useRef(null);
+	const userInput = useRef(null)
 
 	useEffect(() => {
-		// const leadInfo = localStorage.getItem('LGAI-LeadInfo');
-		const leadInfo = false;
+		const leadInfo = localStorage.getItem('LGAI-LeadInfo');
+		// const leadInfo = false;
 		if (leadInfo) {
 			setIsLeadInfoGiven(true);
 		}
@@ -33,6 +34,30 @@ const Home = () => {
 	}, [leadGenIdeas])
 
 	const formatResponse = (res) => {
+		res = res.leadMagnetIdeas;
+		
+		try {
+			return JSON.parse(res)
+		} catch (error) {
+			console.log(res)
+			res = `${res}`
+			const regex = /{[\s\S]*?}/;
+			console.log(res)
+			const matches = res.match(regex);
+			console.log(matches)
+			if (matches && matches.length > 0) {
+				try {
+					const dict = JSON.parse(matches[0]);
+					return dict;
+				} catch (e) {
+					console.error('Error parsing dictionary:', e);
+				}
+			}
+
+			return null
+		}
+	};
+	/* const formatResponse = (res) => {
 		res = res.leadMagnetIdeas;
 		const arr = res.split("\n");
 		let leadGenDict = {};
@@ -48,7 +73,7 @@ const Home = () => {
 		});
 
 		return leadGenDict;
-	};
+	}; */
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -56,9 +81,10 @@ const Home = () => {
 		if (isLeadInfoGiven === false){
 			setDisplayPopupForm(true)
 		}
+		console.log(userInput.current?.value)
 		await fetch("/api/leadProblems", {
 			method: "POST",
-			body: JSON.stringify(businessDetails),
+			body: JSON.stringify(userInput.current?.value),
 		})
 		.then((res) => {
 			const leadProblems = res.json();
@@ -86,22 +112,33 @@ const Home = () => {
 	const loadingElement = () => {
 		if (loading === 1) {
 			return (
-				<div className="flex min-w-[480px] gap-1 text-[#102F54]">
+				<div className="text-[#102F54]">
 					Evaluating your business...
 				</div>
 			)
 		}
 		if (loading === 2) {
 			return (
-				<div className="bg-red-800">Generating Ideas...</div>
+				<div className="text-[#102F54]">
+					Generating Ideas...
+				</div>
 			)
 		}
 	}
 
 	const CtaButton = () => {
 		return (
-			<div className="bg-[#F46036] max-w-md w-max p-4 rounded-md font-semibold">Generate Lead Magnet Ideas</div>
+			<button className="bg-[#F46036] max-w-md w-max p-4 rounded-md font-semibold" onClick={handleSubmit}>Generate Lead Magnet Ideas</button>
 		)
+	}
+
+	const capitalizeFirstLetter = (str) => {
+		let formattedStr = "";
+		str.split(" ").forEach(word => {
+			formattedStr += word.charAt(0).toUpperCase() + word.slice(1) + " ";
+		});
+
+		return formattedStr.trim();
 	}
 
 	return (
@@ -132,38 +169,11 @@ const Home = () => {
 						Stand out from your competitors and attract more
 						customers with lead magnets that actually work.
 					</h1>
-					<textarea name="businessDetails" id="" cols="30" rows="5" placeholder="Describe your business here..." className="border-2 resize-none p-3 rounded-md sm:w-full max-w-2xl w-full text-[#102F54] ring-black/60 ring-offset-2" ></textarea>
-					{/* <div className="flex border-solid border-2  border-[#059C65] rounded-full h-14 w-1/3 overflow-hidden">
-						<textarea
-							type="text"
-							className="bg-transparent h-14 w-1/3 p-3 basis-10/12 flex-shrink-0 outline-none text-[#102F54] resize-none"
-							onChange={(e) => {
-								setBusinessDetails(e.target.value);
-							}}
-							placeholder="Describe your business here..."
-						/>
-						<button
-							className="bg-[#F46036] w-full flex justify-center items-center"
-							onClick={handleSubmit}
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 24 24"
-								fill="currentColor"
-								className="w-6 h-6 text-white"
-							>
-								<path
-									fillRule="evenodd"
-									d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z"
-									clipRule="evenodd"
-								/>
-							</svg>
-						</button>
-					</div> */}
+					<textarea name="businessDetails" id="" cols="30" rows="5" placeholder="Describe your business here..." className="border-2 resize-none p-3 rounded-md sm:w-full max-w-2xl w-full text-[#102F54] ring-black/60 ring-offset-2" ref={userInput} minLength={10}></textarea>
 					{loading ? loadingElement() : <CtaButton /> }
 				</div>
 				{leadGenIdeas !== "" && (
-					<div ref={ideaTabs} className="flex flex-col items-center w-3/4 max-w-2xl sm:w-full mb-7 min-h-screen justify-center mx-4">
+					<div ref={ideaTabs} className="flex flex-col items-center w-full md:max-w-2xl mb-7 min-h-screen justify-center mx-4">
 						<Tab.Group>
 							<Tab.List className="flex space-x-1 rounded-xl bg-[#059C65]/70 p-1 w-full">
 								{Object.keys(leadGenIdeas).map(
@@ -179,7 +189,7 @@ const Home = () => {
 												}
 												key={leadGenMedium}
 											>
-												{leadGenMedium}
+												{capitalizeFirstLetter(leadGenMedium)}
 											</Tab>
 										);
 									}
@@ -204,7 +214,7 @@ const Home = () => {
 																	key={`leadGenIdea-${idx}`}
 																>
 																	{
-																		leadGenIdea
+																		`${idx+1}. ${leadGenIdea}`
 																	}
 																</li>
 															);

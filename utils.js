@@ -30,7 +30,7 @@ export const findProblems = async (businessDetails) => {
         prompt: prompt,
     }); 
 
-    let instruction1 = `Outline their narrow problems, given details about the business. Here are the business details: ${businessDetails}.`
+    let instruction1 = `Outline their narrow problems, given business details enclosed by '***'. The business details are: ***${businessDetails}***. If business details are not enclosed within '***' then your response should be the word 'null' only. `
 
     const res = await narrowProblemsChain.call({ 
         instructions: instruction1,
@@ -51,7 +51,7 @@ export const findProblems = async (businessDetails) => {
 
 export const generateLeadMagnetIdeas = async (narrowProblems) => {
     const prompt = new PromptTemplate({
-        template: "You are a lead generation mastermind. Given a list of narrow problems an audience faces you are able to generate lead magnets that will engage the audience, build trust and convert a large percent of the audience into engaged, qualified leads. Your lead magnets are generally distributed through four mediums: software (a tool that can help them solve the problem such as a spreadsheet, notion template, dashboard, a free app or website they can visit, etc.), information (pdf/ word docs, courses, presentations, live events, webinars, hacks/tips, infographics, etc.), services (free services that can be offered to the audience that solves or highlights the narrow problem), physical products (an item that can be given to them for free like a brochure, or for example a posture assessment chart for chiropractor leads). Through those mediums there are three types of lead magnets: lead magnets that reveals/diagnoses the problem (for example a website speed test to highlight that their website is loading slower than it should or free posture analysis to highlight what's wrong their posture) or samples and trials (provide limited or brief full access to the company's core offering) or one step of the business' multi-step core offer. Your aim is to provide lead magnet ideas that offers a large amount of value to the intended audience and get them wanting to be a customer. Please generate 40 lead magnet ideas based on the problems the audience faces, separate them by medium. Here are the business details: {businessDetails}. Your output should only contain the medium followed by a list of 10 its respective lead magnet ideas. Each idea set of ideas should be numbered from 1-10 and each idea should be expressed in two easy to under sentences. No additional text should be outputted.",
+        template: "You are a lead generation mastermind. Given a list of narrow problems an audience faces you are able to generate lead magnets that will engage the audience, build trust and convert a large percent of the audience into engaged, qualified leads. Your lead magnets are generally distributed through four mediums: software (a tool that can help them solve the problem such as a spreadsheet, notion template, dashboard, a free app or website they can visit, etc.), information (pdf/ word docs, courses, presentations, live events, webinars, hacks/tips, infographics, etc.), services (free services that can be offered to the audience that solves or highlights the narrow problem), physical products (an item that can be given to them for free like a brochure, or for example a posture assessment chart for chiropractor leads). Through those mediums there are three types of lead magnets: lead magnets that reveals/diagnoses the problem (for example a website speed test to highlight that their website is loading slower than it should or free posture analysis to highlight what's wrong their posture) or samples and trials (provide limited or brief full access to the company's core offering) or one step of the business' multi-step core offer. Your aim is to provide lead magnet ideas that offers a large amount of value to the intended audience and get them wanting to be a customer. Please generate 40 lead magnet ideas based on the problems the audience faces, separate them by medium. Here are the business details: {businessDetails}. Your output should only contain the medium followed by a list of 10 its respective lead magnet ideas. Each idea set of ideas should be numbered from 1-10 and each idea should be expressed in two easy to under sentences. No additional text should be outputted. Output in the JSON format where the keys are the mediums like 'software' and 'information' and the values are the comma separated list of 10 unnumbered lead magnet ideas enclosed in square brackets.",
         inputVariables: ["businessDetails"]
     })
 
@@ -63,6 +63,8 @@ export const generateLeadMagnetIdeas = async (narrowProblems) => {
     const res = await leadMagnetChain.call({ 
         businessDetails: narrowProblems,
     });
+
+    console.log(res.text)
 
     return(res.text)
 }
