@@ -39,12 +39,12 @@ const Home = () => {
 		try {
 			return JSON.parse(res)
 		} catch (error) {
-			console.log(res)
+			// console.log(res)
 			res = `${res}`
 			const regex = /{[\s\S]*?}/;
-			console.log(res)
+			// console.log(res)
 			const matches = res.match(regex);
-			console.log(matches)
+			// console.log(matches)
 			if (matches && matches.length > 0) {
 				try {
 					const dict = JSON.parse(matches[0]);
@@ -81,7 +81,7 @@ const Home = () => {
 		if (isLeadInfoGiven === false){
 			setDisplayPopupForm(true)
 		}
-		console.log(userInput.current?.value)
+		// console.log(userInput.current?.value)
 		/* await fetch("/api/leadProblems", {
 			method: "POST",
 			body: JSON.stringify(userInput.current?.value),
