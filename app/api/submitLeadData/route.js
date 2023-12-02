@@ -14,10 +14,10 @@ export async function POST(req) {
             'content-type': 'application/json'
             },
     })
-        .then((res) => res.json())
-        .then((response) => {
-            res = response
-        })
-    
-        return NextResponse.json(res);
+    .then((res) => res.json())
+    .then((response) => {
+        res = response
+    })
+
+    return NextResponse.json(res);
 }
