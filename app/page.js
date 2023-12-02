@@ -128,7 +128,9 @@ const Home = () => {
 
 	const CtaButton = () => {
 		return (
-			<button className="bg-[#F46036] max-w-md w-max p-4 rounded-md font-semibold" onClick={handleSubmit}>Generate Lead Magnet Ideas</button>
+			<button className="bg-[#F46036] max-w-md w-max p-4 rounded-md font-semibold" type="submit" disabled={loading}>
+				{loading ? loadingElement : "Generate Lead Magnet Ideas"}
+			</button>
 		)
 	}
 
@@ -169,8 +171,10 @@ const Home = () => {
 						Stand out from your competitors and attract more
 						customers with lead magnets that actually work.
 					</h1>
-					<textarea name="businessDetails" id="" cols="30" rows="5" placeholder="Describe your business here..." className="border-2 resize-none p-3 rounded-md sm:w-full max-w-2xl w-full text-[#102F54] ring-black/60 ring-offset-2" ref={userInput} minLength={10}></textarea>
-					{loading ? loadingElement() : <CtaButton /> }
+					{<form onSubmit={handleSubmit} className="flex justify-center items-center flex-col gap-10 w-full">
+						<textarea name="businessDetails" id="" cols="30" rows="5" placeholder="Describe your business here..." className="border-2 resize-none p-3 rounded-md sm:w-full max-w-2xl w-full text-[#102F54] ring-black/60 ring-offset-2" ref={userInput} minLength={10} required></textarea>
+						{loading ? loadingElement() : <CtaButton /> }
+					</form>}
 				</div>
 				{leadGenIdeas !== "" && (
 					<div ref={ideaTabs} className="flex flex-col items-center w-full md:max-w-2xl mb-7 min-h-screen justify-center mx-4">
