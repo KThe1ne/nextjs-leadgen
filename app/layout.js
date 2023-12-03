@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
       <body className={montserrat.className}>
         {/* Google Tag Manager (noscript) */}
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-544GVJ2Z"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  height="0" width="0" style={"display:none;visibility:hidden"}></iframe></noscript>
         {children}
         {/* End Google Tag Manager (noscript) */}
       </body>
