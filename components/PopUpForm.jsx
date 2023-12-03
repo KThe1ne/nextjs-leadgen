@@ -1,4 +1,3 @@
-import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState, useRef } from "react";
 
 const PopUpForm = ({ setIsLeadInfoGiven, isLeadInfoGiven }) => {
