@@ -128,7 +128,7 @@ const Home = () => {
 
 	const CtaButton = () => {
 		return (
-			<button className="bg-[#F46036] max-w-md w-max p-4 rounded-md font-semibold" type="submit" disabled={loading}>
+			<button className="bg-[#F46036] max-w-md w-max p-4 rounded-md font-semibold" type="submit" id="generateLead" disabled={loading}>
 				{loading ? loadingElement : "Generate Lead Magnet Ideas"}
 			</button>
 		)
