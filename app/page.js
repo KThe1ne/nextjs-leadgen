@@ -171,7 +171,7 @@ const Home = () => {
 						Stand out from your competitors and attract more
 						customers with lead magnets that actually work.
 					</h1>
-					{<form onSubmit={handleSubmit} className="flex justify-center items-center flex-col gap-10 w-full">
+					{<form onSubmit={handleSubmit} className="flex justify-center items-center flex-col gap-10 w-full" id="genLeadForm">
 						<textarea name="businessDetails" id="" cols="30" rows="5" placeholder="Describe your business here..." className="border-2 resize-none p-3 rounded-md sm:w-full max-w-2xl w-full text-[#102F54] ring-black/60 ring-offset-2" ref={userInput} minLength={10} required></textarea>
 						{loading ? loadingElement() : <CtaButton /> }
 					</form>}
