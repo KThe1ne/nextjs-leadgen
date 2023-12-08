@@ -14,7 +14,14 @@ export async function POST(req) {
             'content-type': 'application/json'
             },
     })
-    .then((res) => res.json())
+    .then((res) => {
+        console.log(res)
+        if (res.ok){
+            console.log("Trigger Facebook Lead")
+            // fbq('track', 'Lead');
+        }
+        return res.json()
+    })
     .then((response) => {
         res = response
     })

@@ -6,41 +6,40 @@ import { Tab } from "@headlessui/react";
 
 import diemmoLogo from "../public/diemmo-logo.svg";
 import gridPattern from "../public/grid.svg";
-import PopUpForm from "@/components/PopUpForm";
-
+import PopUpForm from "@/app/components/PopUpForm";
 
 const Home = () => {
 	const [businessDetails, setBusinessDetails] = useState("");
 	const [leadGenIdeas, setLeadGenIdeas] = useState("");
-	const [loading, setLoading] = useState(0)
-	const [isLeadInfoGiven, setIsLeadInfoGiven] = useState(false)
-	const [displayPopupForm, setDisplayPopupForm] = useState(false)
+	const [loading, setLoading] = useState(0);
+	const [isLeadInfoGiven, setIsLeadInfoGiven] = useState(false);
+	const [displayPopupForm, setDisplayPopupForm] = useState(false);
 
 	const ideaTabs = useRef(null);
-	const userInput = useRef(null)
+	const userInput = useRef(null);
 
 	useEffect(() => {
-		const leadInfo = localStorage.getItem('LGAI-LeadInfo');
-		// const leadInfo = false;
+		// const leadInfo = localStorage.getItem('LGAI-LeadInfo');
+		const leadInfo = false;
 		if (leadInfo) {
 			setIsLeadInfoGiven(true);
 		}
-	}, [])
+	}, []);
 
 	useEffect(() => {
-		if(leadGenIdeas !== "") {
-			ideaTabs.current?.scrollIntoView({ behavior: 'smooth' })
+		if (leadGenIdeas !== "") {
+			ideaTabs.current?.scrollIntoView({ behavior: "smooth" });
 		}
-	}, [leadGenIdeas])
+	}, [leadGenIdeas]);
 
 	const formatResponse = (res) => {
 		res = res.leadMagnetIdeas;
-		
+
 		try {
-			return JSON.parse(res)
+			return JSON.parse(res);
 		} catch (error) {
 			// console.log(res)
-			res = `${res}`
+			res = `${res}`;
 			const regex = /{[\s\S]*?}/;
 			// console.log(res)
 			const matches = res.match(regex);
@@ -50,11 +49,11 @@ const Home = () => {
 					const dict = JSON.parse(matches[0]);
 					return dict;
 				} catch (e) {
-					console.error('Error parsing dictionary:', e);
+					console.error("Error parsing dictionary:", e);
 				}
 			}
 
-			return null
+			return null;
 		}
 	};
 	/* const formatResponse = (res) => {
@@ -77,12 +76,12 @@ const Home = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setLoading(1)
-		if (isLeadInfoGiven === false){
-			setDisplayPopupForm(true)
+		setLoading(1);
+		if (isLeadInfoGiven === false) {
+			setDisplayPopupForm(true);
 		}
 		// console.log(userInput.current?.value)
-		await fetch("/api/leadProblems", {
+		/* await fetch("/api/leadProblems", {
 			method: "POST",
 			body: JSON.stringify(userInput.current?.value),
 		})
@@ -106,7 +105,7 @@ const Home = () => {
 				setLoading(0)
 				setLeadGenIdeas(leadGenDict);
 			});
-		})
+		}) */
 	};
 
 	const loadingElement = () => {
@@ -115,39 +114,40 @@ const Home = () => {
 				<div className="text-[#102F54]">
 					Evaluating your business...
 				</div>
-			)
+			);
 		}
 		if (loading === 2) {
-			return (
-				<div className="text-[#102F54]">
-					Generating Ideas...
-				</div>
-			)
+			return <div className="text-[#102F54]">Generating Ideas...</div>;
 		}
-	}
+	};
 
 	const CtaButton = () => {
 		return (
-			<button className="bg-[#F46036] max-w-md w-max p-4 rounded-md font-semibold" type="submit" id="generateLead" disabled={loading}>
+			<button
+				className="bg-[#F46036] max-w-md w-max p-4 rounded-md font-semibold"
+				type="submit"
+				id="generateLead"
+				disabled={loading}
+			>
 				{loading ? loadingElement : "Generate Lead Magnet Ideas"}
 			</button>
-		)
-	}
+		);
+	};
 
 	const capitalizeFirstLetter = (str) => {
 		let formattedStr = "";
-		str.split(" ").forEach(word => {
+		str.split(" ").forEach((word) => {
 			formattedStr += word.charAt(0).toUpperCase() + word.slice(1) + " ";
 		});
 
 		return formattedStr.trim();
-	}
+	};
 
 	return (
 		<div className="overflow-y-auto">
 			{displayPopupForm && (
-				< PopUpForm 
-					setIsLeadInfoGiven={setIsLeadInfoGiven} 
+				<PopUpForm
+					setIsLeadInfoGiven={setIsLeadInfoGiven}
 					isLeadInfoGiven={isLeadInfoGiven}
 				/>
 			)}
@@ -171,13 +171,32 @@ const Home = () => {
 						Stand out from your competitors and attract more
 						customers with lead magnets that actually work.
 					</h1>
-					{<form onSubmit={handleSubmit} className="flex justify-center items-center flex-col gap-10 w-full" id="genLeadForm">
-						<textarea name="businessDetails" id="" cols="30" rows="5" placeholder="Describe your business here..." className="border-2 resize-none p-3 rounded-md sm:w-full max-w-2xl w-full text-[#102F54] ring-black/60 ring-offset-2" ref={userInput} minLength={10} required></textarea>
-						{loading ? loadingElement() : <CtaButton /> }
-					</form>}
+					{
+						<form
+							onSubmit={handleSubmit}
+							className="flex justify-center items-center flex-col gap-10 w-full"
+							id="genLeadForm"
+						>
+							<textarea
+								name="businessDetails"
+								id=""
+								cols="30"
+								rows="5"
+								placeholder="Describe your business here..."
+								className="border-2 resize-none p-3 rounded-md sm:w-full max-w-2xl w-full text-[#102F54] ring-black/60 ring-offset-2"
+								ref={userInput}
+								minLength={10}
+								required
+							></textarea>
+							{loading ? loadingElement() : <CtaButton />}
+						</form>
+					}
 				</div>
 				{leadGenIdeas !== "" && (
-					<div ref={ideaTabs} className="flex flex-col items-center w-full md:max-w-2xl mb-7 min-h-screen justify-center mx-4">
+					<div
+						ref={ideaTabs}
+						className="flex flex-col items-center w-full md:max-w-2xl mb-7 min-h-screen justify-center mx-4"
+					>
 						<Tab.Group>
 							<Tab.List className="flex space-x-1 rounded-xl bg-[#059C65]/70 p-1 w-full">
 								{Object.keys(leadGenIdeas).map(
@@ -193,7 +212,9 @@ const Home = () => {
 												}
 												key={leadGenMedium}
 											>
-												{capitalizeFirstLetter(leadGenMedium)}
+												{capitalizeFirstLetter(
+													leadGenMedium
+												)}
 											</Tab>
 										);
 									}
@@ -217,9 +238,9 @@ const Home = () => {
 																	className="relative rounded-md p-3 w-full hover:bg-white"
 																	key={`leadGenIdea-${idx}`}
 																>
-																	{
-																		`${idx+1}. ${leadGenIdea}`
-																	}
+																	{`${
+																		idx + 1
+																	}. ${leadGenIdea}`}
 																</li>
 															);
 														}
