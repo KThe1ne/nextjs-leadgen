@@ -81,7 +81,7 @@ const Home = () => {
 			setDisplayPopupForm(true);
 		}
 		// console.log(userInput.current?.value)
-		/* await fetch("/api/leadProblems", {
+		await fetch("/api/leadProblems", {
 			method: "POST",
 			body: JSON.stringify(userInput.current?.value),
 		})
@@ -105,7 +105,7 @@ const Home = () => {
 				setLoading(0)
 				setLeadGenIdeas(leadGenDict);
 			});
-		}) */
+		})
 	};
 
 	const loadingElement = () => {

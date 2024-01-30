@@ -41,12 +41,12 @@ const PopUpForm = ({ setIsLeadInfoGiven, isLeadInfoGiven }) => {
             companyName: companyName,            
 		};
 
-		await fetch("api/submitLeadData", {
-			method: "POST",
-			body: JSON.stringify(data),
-		})
-			.then((res) => res.json())
-			.then(() => facebookPixelLeadEvent());
+		// await fetch("api/submitLeadData", {
+		// 	method: "POST",
+		// 	body: JSON.stringify(data),
+		// })
+		// 	.then((res) => res.json())
+			// .then(() => facebookPixelLeadEvent());
 		localStorage.setItem("LGAI-LeadInfo", JSON.stringify(data));
 		setIsLeadInfoGiven(true);
 		closePopUp();
