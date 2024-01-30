@@ -24,12 +24,12 @@ export default function RootLayout({ children }) {
 				</Suspense>
 				{/* Google Tag Manager (noscript) */}
 				<noscript>
-					<iframe
+					{/* <iframe
 						src="https://www.googletagmanager.com/ns.html?id=GTM-544GVJ2Z"
 						height="0"
 						width="0"
 						style={{ display: "none", visibility: "hidden" }}
-					></iframe>
+					></iframe> */}
 				</noscript>
 				{children}
 				{/* End Google Tag Manager (noscript) */}

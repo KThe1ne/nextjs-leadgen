@@ -5,7 +5,7 @@ import Script from "next/script"
 const Analytics = () => {
   return (
     <>  
-        <Script
+        {/* <Script
             id="gtm-script"
             strategy="afterInteractive"
             dangerouslySetInnerHTML={{
@@ -17,7 +17,7 @@ const Analytics = () => {
                     })(window,document,'script','dataLayer', 'GTM-544GVJ2Z');
                 `,
             }}
-        />
+        /> */}
     </>
   )
 }
