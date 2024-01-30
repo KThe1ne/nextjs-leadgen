@@ -1,8 +1,5 @@
 const { NextRequest, NextResponse } = require("next/server");
 
-export const runtime = 'edge'; // 'nodejs' is the default
-export const dynamic = 'force-dynamic'; // static by default, unless reading the request
-
 export async function POST(req) {
 	const leadData = await req?.json();
 	let res = {}
