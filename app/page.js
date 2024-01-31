@@ -19,8 +19,8 @@ const Home = () => {
 	const userInput = useRef(null);
 
 	useEffect(() => {
-		// const leadInfo = localStorage.getItem('LGAI-LeadInfo');
-		const leadInfo = false;
+		const leadInfo = localStorage.getItem('LGAI-LeadInfo');
+		// const leadInfo = false;
 		if (leadInfo) {
 			setIsLeadInfoGiven(true);
 		}
@@ -152,7 +152,7 @@ const Home = () => {
 				/>
 			)}
 			{/* Header */}
-			<div className="flex py-4 px-3 w-full gap-3 h-16 items-center border-b-[1px] border-[#102F54]/20 ">
+			{/* <div className="flex py-4 px-3 w-full gap-3 h-16 items-center border-b-[1px] border-[#102F54]/20 ">
 				<Image
 					src={diemmoLogo}
 					alt=""
@@ -160,7 +160,7 @@ const Home = () => {
 					width={40}
 				/>
 				<span className="text-[#059C65] w-max font-bold">DIEMMO</span>
-			</div>
+			</div> */}
 			{/* Form */}
 			<div className="flex justify-center flex-col gap-3 items-center p-4">
 				<div className="flex content-center items-center justify-center w-full flex-col gap-10 h-[calc(100vh-(4rem+16px))]">
