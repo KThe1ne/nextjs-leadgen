@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import diemmoLogo from "../../public/diemmo-logo.svg";
+import diemmoLogo from "@/public/diemmo-logo.svg";
+import ebookImage from "@/public/ebook.png"
 
 const OptInPage = () => {
 
@@ -13,21 +14,21 @@ const OptInPage = () => {
     }
 
     return (
-        <div className='w-full h-[calc(100vh-4rem) flex flex-row justify-center items-center p-6'>
+        <div className='w-full h-screen flex flex-row justify-center items-center p-6'>
             <div className='w-[1360px] h-auto'>
                 <h1 className='text-[#102F54] font-bold text-center text-[48px] mb-3 uppercase'>“I’m Paying Too Much For Leads!!?😠”</h1>
                 <h2 className='text-[#102F54] font-semibold text-[20px] leading-9 text-center mb-9'>Want to get more leads for less? Get 40 Exclusive Lead Magnet Ideas to Win Your Ideal Customers!</h2>
-                <div className='grid grid-cols-[repeat(auto-fit,minmax(200px,_1fr))] w-full h-full border-2 border-[#102F54] rounded-lg overflow-hidden'>
-                    <div className='bg-[#102F54]'>
+                <div className='grid grid-cols-[repeat(auto-fit,minmax(280px,_1fr))] w-full h-full border-2 border-[#102F54] rounded-lg overflow-hidden'>
+                    <div style={{ backgroundImage: `url(${ebookImage.src})`}} className='bg-center bg-cover min-h-[400px]'>
                         
                     </div>
                     <div className='h-auto p-10 flex flex-col gap-3'>
-                        <h2 className='text-[#102F54] text-sm'>
+                        <h2 className='text-[#102F54] text-sm font-medium'>
                             We are giving away access to a small part of our <strong>Big Business Marketing System</strong> for a limited time only. 
                             <br /><br />
                             <strong>How it works?</strong>
                             <br />
-                            Enter a brief description of your business and we will send you a tailor-made list of 40 unique lead magnets to help you attract and close more customer FREE of cost.  
+                            Enter a brief description of your business and we will send you a tailor-made list of 40 unique lead magnets to help you attract and close more customer.  
                         </h2>
                         <form
                                 onSubmit={handleSubmit}
