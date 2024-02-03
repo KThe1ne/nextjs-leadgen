@@ -5,7 +5,7 @@ export async function POST(req) {
 	let res = {}
     console.log(leadData)
 
-    await fetch("https://rest.gohighlevel.com/v1/contacts/", {
+    /* await fetch("https://rest.gohighlevel.com/v1/contacts/", {
         method: "POST",
         body: JSON.stringify(leadData),
         headers: {
@@ -23,7 +23,27 @@ export async function POST(req) {
     })
     .then((response) => {
         res = response
-    })
+    }) */
 
-    return NextResponse.json(res);
+    const url = 'https://services.leadconnectorhq.com/contacts/';
+    const options = {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${process.env.GHL_AUTH_CODE}`,
+            Version: '2021-07-28',
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+        },
+        body: JSON.stringify(leadData),
+    };
+
+    try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+
+    return NextResponse.json(data);
 }

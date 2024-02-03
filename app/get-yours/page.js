@@ -3,18 +3,66 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import diemmoLogo from "@/public/diemmo-logo.svg";
 import ebookImage from "@/public/ebook.png"
+import PopUpForm from "@/app/components/PopUpForm";
 
 const OptInPage = () => {
 
+    const [displayPopupForm, setDisplayPopupForm] = useState(false);
+    const [isLeadInfoGiven, setIsLeadInfoGiven] = useState(false);
+    const [loading, setLoading] = useState(false);
     const userInput = useRef(null);
+
+    const processBusinessDetails = async () => {
+        const businessDetails = userInput.current?.value
+        await fetch("/api/leadProblems", {
+			method: "POST",
+			body: JSON.stringify(businessDetails),
+		})
+		.then((res) => {
+			const leadProblems = res.json();
+			return leadProblems;
+		})
+		.then(async (leadProblems) => {
+			console.log(leadProblems)
+			setLoading(2)
+			await fetch("/api/leadGenIdeas", {
+				method: "POST",
+				body: JSON.stringify(leadProblems),
+			})
+			.then((res) => {
+				res = res.json()
+				return res;
+			})
+        })
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        if (isLeadInfoGiven === false) {
+			setDisplayPopupForm(true);
+		} else {
+            processBusinessDetails()
+        }
+        
     }
+
+    
+	useEffect(() => {
+		// const leadInfo = localStorage.getItem('LGAI-LeadInfo');
+		const leadInfo = false;
+		if (leadInfo) {
+			setIsLeadInfoGiven(true);
+		}
+	}, []);
 
     return (
         <div className='w-full h-screen flex flex-row justify-center items-center p-6'>
+            {displayPopupForm && (
+				<PopUpForm
+					setIsLeadInfoGiven={setIsLeadInfoGiven}
+					isLeadInfoGiven={isLeadInfoGiven}
+				/>
+			)}
             <div className='w-[1360px] h-auto'>
                 <h1 className='text-[#102F54] font-bold text-center text-[48px] mb-3 uppercase'>“I’m Paying Too Much For Leads!!?😠”</h1>
                 <h2 className='text-[#102F54] font-semibold text-[20px] leading-9 text-center mb-9'>Want to get more leads for less? Get 40 Exclusive Lead Magnet Ideas to Win Your Ideal Customers!</h2>
@@ -28,11 +76,11 @@ const OptInPage = () => {
                             <br /><br />
                             <strong>How it works?</strong>
                             <br />
-                            Enter a brief description of your business and we will send you a tailor-made list of 40 unique lead magnets to help you attract and close more customer.  
+                            Enter a brief description of your business and we will send you a tailor-made list of 40 unique lead magnets to help you attract and close more customers.  
                         </h2>
                         <form
                                 onSubmit={handleSubmit}
-                                className="flex justify-center items-center flex-col gap-10 w-full"
+                                className="flex justify-center items-center flex-col gap-3 w-full"
                                 id="genLeadForm"
                             >
                                 <textarea
@@ -46,8 +94,15 @@ const OptInPage = () => {
                                     minLength={10}
                                     required
                                 ></textarea>
+                                <button 
+                                    className='bg-[#F46036] w-full p-[12px_24px] rounded-md text-base font-semibold'
+                                    type="submit"
+				                    id="generateLead"
+                                    >
+                                        Send Me The Guide 👇
+                                    </button>
                             </form>
-                        <button className='bg-[#F46036] w-full p-[12px_24px] rounded-md text-base font-semibold'>Send Me The Guide 👇</button>
+                        
                         <p className='text-[10px] text-[#0C8BBB]'>* We respect your privacy. Unsubscribe at anytime.</p>
                         <span className="text-[#102F54] mb-[-28px] mt-4 text-center text-[10px] font-black">BUILT BY <Image
                             src={diemmoLogo}

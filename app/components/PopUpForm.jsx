@@ -41,12 +41,15 @@ const PopUpForm = ({ setIsLeadInfoGiven, isLeadInfoGiven }) => {
             companyName: companyName,            
 		};
 
-		// await fetch("api/submitLeadData", {
-		// 	method: "POST",
-		// 	body: JSON.stringify(data),
-		// })
-		// 	.then((res) => res.json())
-			// .then(() => facebookPixelLeadEvent());
+		await fetch("api/submitLeadData", {
+			method: "POST",
+			body: JSON.stringify(data),
+		})
+		.then((res) => res.json())
+		.then((res) => {
+			data["userId"] = res["id"]
+		})
+		.then(() => facebookPixelLeadEvent());
 		localStorage.setItem("LGAI-LeadInfo", JSON.stringify(data));
 		setIsLeadInfoGiven(true);
 		closePopUp();
@@ -55,7 +58,7 @@ const PopUpForm = ({ setIsLeadInfoGiven, isLeadInfoGiven }) => {
 	return (
 		<div>
 			{isOpen && (
-				<div className="z-10 w-full h-full fixed flex justify-center items-center">
+				<div className="z-10 w-full h-full fixed flex justify-center items-center top-0 left-0">
 					<div className="w-full h-full bg-[#102F54]/20 backdrop-blur-sm"></div>
 					<div className="absolute z-20 bg-[#102F54] max-w-[600px] w-[400px] rounded-lg">
 						<div className="p-4 flex justify-center items-center text-center pb-0 text-2xl font-semibold">

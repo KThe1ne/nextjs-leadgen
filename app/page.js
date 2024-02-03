@@ -102,6 +102,7 @@ const Home = () => {
 			})
 			.then((res) => {
 				const leadGenDict = formatResponse(res);
+				console.log(leadGenDict)
 				setLoading(0)
 				setLeadGenIdeas(leadGenDict);
 			});
