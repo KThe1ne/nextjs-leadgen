@@ -33,15 +33,7 @@ export default function RootLayout({ children }) {
 						style={{ display: "none", visibility: "hidden" }}
 					></iframe> */}
 				</noscript>
-				{/* 	<div className="flex py-4 px-3 w-full gap-3 h-16 items-center border-b-[1px] border-[#102F54]/20 ">
-						<Image
-							src={diemmoLogo}
-							alt=""
-							className="fill-[#059C65] text-white"
-							width={40}
-						/>
-						<span className="text-[#059C65] w-max font-bold">DIEMMO</span>
-					</div> */}
+
 				{children}
 				{/* End Google Tag Manager (noscript) */}
 			</body>

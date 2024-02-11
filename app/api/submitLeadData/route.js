@@ -2,7 +2,7 @@ const { NextRequest, NextResponse } = require("next/server");
 
 export async function POST(req) {
 	const leadData = await req?.json();
-	let res = {}
+	let data = {}
     console.log(leadData)
 
     /* await fetch("https://rest.gohighlevel.com/v1/contacts/", {
@@ -24,8 +24,8 @@ export async function POST(req) {
     .then((response) => {
         res = response
     }) */
-
-    const url = 'https://services.leadconnectorhq.com/contacts/';
+    console.log(`Bearer ${process.env.GHL_AUTH_CODE}`)
+    const url = 'https://services.leadconnectorhq.com/contacts/upsert';
     const options = {
         method: 'POST',
         headers: {
@@ -39,7 +39,7 @@ export async function POST(req) {
 
     try {
         const response = await fetch(url, options);
-        const data = await response.json();
+        data = await response.json();
         console.log(data);
     } catch (error) {
         console.error(error);

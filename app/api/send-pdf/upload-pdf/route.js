@@ -1,9 +1,22 @@
-const PDFDocument = require('pdfkit');
-const fs = require('fs');
-const path = require('path');
+/* 
+    1. Pass dcoument data to server
+    2. Run createDoc.js and create PDF
+    3. Upload PDF to GHL
+    4. Add custom value to user with the filename
+    5. Add user to workflow
+    6. Send email with link to pdf
 
-const details = 
-{
+*/
+const { NextRequest, NextResponse } = require("next/server");
+import fs from 'fs';
+import FormData from "form-data";
+import axios from 'axios';
+import { PDFDocument } from 'pdf-lib'
+import { error } from "console";
+
+
+
+const data = {
     "software": [
         "Bathroom renovation cost calculator tool to estimate expenses based on design and materials",
         "Interactive bathroom design planner to visualize different layout and fixture options",
@@ -54,73 +67,56 @@ const details =
     ]
 }
 
+export async function POST(req) {
+    console.log("Uploading PDF")
+    let response = {};
+    const requestData = await req?.json();
+    const pdfPath = requestData["pdfPath"]
+    const username = requestData["username"]
+    const url = 'https://services.leadconnectorhq.com/medias/upload-file';
+    const form = new FormData();
+    form.append('file', fs.createReadStream(pdfPath));
+    form.append('hosted', 'false');
+    // form.append('fileUrl', './');
+    form.append('name', `${username}.pdf`);
 
-const leadGenPDF = (details) => {
-    return new Promise ((resolve, reject) => {
-        const doc = new PDFDocument({ size: 'A4' });
-        const outputPath = path.join(__dirname, 'public', 'temp', 'output.pdf');
-        const writeStream = fs.createWriteStream(outputPath);
+    const options = {
+    method: 'POST',
+    headers: {
+        Authorization: `Bearer ${process.env.GHL_AUTH_CODE}`,
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+        Version: '2021-07-28',
+    }
+    };
 
-        // Error handling for writeStream
-        writeStream.on('error', reject);
-            // Handle file writing errors
+    options.body = form;
 
-        writeStream.on('finish', () => {
-            console.log('PDF successfully created and saved.');
-            return resolve(outputPath);
-            // Perform actions after successfully saving the file, if necessary
-        });
-
-        // Register fonts
-        try {
-            doc.registerFont('Bold', './public/fonts/Montserrat-Bold.otf');
-            doc.registerFont('Regular', './public/fonts/Montserrat-Regular.otf');
-            doc.registerFont('Medium', './public/fonts/Montserrat-Medium.otf');
-        } catch (error) {
-            console.error('Error registering fonts:', error);
-            // Handle font registration errors or fallback to default
-        }
-
-        doc.pipe(writeStream);
-        doc.fontSize(16).fillColor('#102F54');
-        
-        // Cover Page
-        try {
-            doc.image("./public/cover-page.png", 0, 0, { cover: [doc.page.width, doc.page.height] });
-        } catch (error) {
-            console.error('Error loading cover page image:', error);
-            // Handle image loading errors or provide an alternative
-        }
-
-        // First Page
-        doc.addPage();
-
-        Object.keys(details).forEach((magnetType, idx) => {
-            doc.font('Bold')
-                .fillColor('#102F54')
-                .text(`${magnetType} Lead Magnets`.toUpperCase())
-                .moveDown(1);
-
-            doc.font('Medium')
-                .fontSize(12)
-                .list(details[magnetType], {
-                    listType: 'numbered',
-                    width: 450,
-                    paragraphGap: 12,
-                    textIndent: 32,
-                    bulletIndent: 32, 
-                });
-
-            if (idx !== Object.keys(details).length - 1) {
-                doc.addPage();
+    try {
+        axios.post(url, form, options)
+        .then(async (res) => {
+            // console.log(res)
+            if (res.status < 400) {
+                console.log(res.data) 
+                response = res.data
+                console.log("Upload successful")
+                fs.unlink(pdfPath, (err) => {
+                    if (err) return console.error(err)
+                    console.log("File deleted successfully")
+                })
             }
-        });
+        })
+        .catch((reason) => {
+            console.log(reason.cause)
+            // console.log(`${reason.status} - Upload Failed`)
+            return NextResponse.json({"status": "Upload failed"});
+        })
+    
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({"status": 500});
+    }
+	
+    return NextResponse.json(response);
+}
 
-        
-
-        doc.end();
-    })
-};
-
-
-leadGenPDF(details)

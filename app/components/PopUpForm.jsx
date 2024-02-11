@@ -2,7 +2,7 @@
 
 import { Fragment, useState, useRef } from "react";
 
-const PopUpForm = ({ setIsLeadInfoGiven, isLeadInfoGiven }) => {
+const PopUpForm = ({ setIsLeadInfoGiven, isLeadInfoGiven, setLeadDetails=false }) => {
 	const [isOpen, setIsOpen] = useState(true);
 	const formRef = useRef();
 
@@ -32,12 +32,14 @@ const PopUpForm = ({ setIsLeadInfoGiven, isLeadInfoGiven }) => {
 			name: fullName,
 			email: email,
 			phone: phoneNumber,
-            company_position: companyPosition,
+            // company_position: companyPosition,
             source: "LeadGenAI",
-            customField: {
+            customFields: ["vx5RJb83ApMDaVizD3Ar", companyPosition],
+			/* {
                 // #Hard-Coded
                 "vx5RJb83ApMDaVizD3Ar": companyPosition
-            },
+            }, */
+			locationId: "q2F8nQU6MwShtOql24uK",
             companyName: companyName,            
 		};
 
@@ -47,9 +49,13 @@ const PopUpForm = ({ setIsLeadInfoGiven, isLeadInfoGiven }) => {
 		})
 		.then((res) => res.json())
 		.then((res) => {
-			data["userId"] = res["id"]
+			data["userId"] = res?.contact["id"];
+			if (setLeadDetails !== false) {
+				console.log(data)
+				setLeadDetails({...data})
+			}
 		})
-		.then(() => facebookPixelLeadEvent());
+		// .then(() => facebookPixelLeadEvent());
 		localStorage.setItem("LGAI-LeadInfo", JSON.stringify(data));
 		setIsLeadInfoGiven(true);
 		closePopUp();
