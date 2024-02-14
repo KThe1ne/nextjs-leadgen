@@ -40,6 +40,7 @@ export async function POST(req) {
     try {
         const response = await fetch(url, options);
         data = await response.json();
+        // Trigger Facebook Lead
         console.log(data);
     } catch (error) {
         console.error(error);

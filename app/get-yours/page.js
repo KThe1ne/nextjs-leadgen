@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import diemmoLogo from "@/public/diemmo-logo.svg";
 import ebookImage from "@/public/ebook.png"
@@ -12,161 +13,130 @@ const OptInPage = () => {
     const [leadDetails, setLeadDetails] = useState({})
     const [loading, setLoading] = useState(false);
     const userInput = useRef(null);
+    const router = useRouter();
     let userId;
 
-    const details = 
-{
-    "software": [
-        "Bathroom renovation cost calculator tool to estimate expenses based on design and materials",
-        "Interactive bathroom design planner to visualize different layout and fixture options",
-        "Project timeline and budget tracking spreadsheet to keep track of expenses and progress",
-        "Virtual reality tour of different bathroom designs and layouts for inspiration",
-        "Online directory of reputable suppliers for materials and fixtures",
-        "Interactive checklist for evaluating contractor qualifications and services offered",
-        "3D bathroom layout visualization tool to help homeowners plan their ideal renovation",
-        "Budget-friendly fixture and material comparison tool to find the best deals",
-        "Interactive quiz to help homeowners identify their design style preferences",
-        "Customizable renovation planning dashboard to organize ideas, quotes, and schedules"
-    ],
-    "information": [
-        "Comprehensive guide to hiring a trustworthy and skilled contractor",
-        "Live webinar on navigating the renovation process and avoiding common pitfalls",
-        "Ebook on designing a functional and stylish bathroom within budget",
-        "DIY renovation hacks and tips for homeowners on a tight budget",
-        "Presentation on understanding different types of bathroom fixtures and their pros and cons",
-        "Step-by-step video course on planning and executing a successful bathroom renovation",
-        "Infographic on the top design trends and materials for modern bathrooms",
-        "Free consultation with a professional designer to discuss renovation ideas and options",
-        "Expert panel discussion on overcoming renovation challenges and setbacks",
-        "Interactive workshop on creating a realistic budget for a bathroom renovation"
-    ],
-    "services": [
-        "Free in-home consultation to assess the current bathroom and discuss renovation options",
-        "Sample renovation plan and design proposal customized to the homeowner's preferences",
-        "Virtual reality tour of completed bathroom renovation projects for inspiration",
-        "Complimentary material and fixture sourcing service to find the best deals",
-        "Trial project management service to oversee a small renovation project from start to finish",
-        "Free contractor matchmaking service to connect homeowners with reputable professionals",
-        "Limited-time discount offer on renovation services for early inquiries",
-        "Free virtual consultation with a renovation expert to address specific concerns and questions",
-        "Trial access to a project tracking and communication platform for seamless renovation coordination",
-        "Complimentary project timeline and budget assessment to identify potential cost savings"
-    ],
-    "physical products": [
-        "Customized bathroom renovation planning guide and checklist",
-        "Free sample box of tile and fixture options for the renovation",
-        "Post-renovation care package with maintenance tips and recommended products",
-        "Informative brochure on the most durable and stylish materials for bathroom renovations",
-        "Limited edition design inspiration booklet featuring completed renovation projects",
-        "Complimentary renovation planning workbook for homeowners to organize their ideas",
-        "Exclusive discount voucher for materials and fixtures from partner suppliers",
-        "Free blueprint of a functional bathroom layout for reference",
-        "Trial pack of eco-friendly and cost-effective renovation materials",
-        "Informative poster on common renovation challenges and how to address them"
-    ]
-    }
+    const formatResponse = (res) => {
+		res = res.leadMagnetIdeas;
 
-    const processBusinessDetails = async (leadName) => {
-        console.log(leadName)
-        const formattedLeadName = leadName.replace(/\s/g,"_").toLowerCase();
-        // const businessDetails = userInput.current?.value
-        // await fetch("/api/leadProblems", {
-		// 	method: "POST",
-		// 	body: JSON.stringify(businessDetails),
-		// })
-		// .then((res) => {
-		// 	const leadProblems = res.json();
-		// 	return leadProblems;
-		// })
-		// .then(async (leadProblems) => {
-		// 	console.log(leadProblems)
-		// 	setLoading(2)
-		// 	await fetch("/api/leadGenIdeas", {
-		// 		method: "POST",
-		// 		body: JSON.stringify(leadProblems),
-		// 	})
-		// 	.then((res) => {
-		// 		res = res.json()
-		// 	})
-        //     .then(async (res) => {
-        //         await fetch("/api/send-pdf", {
-        //             method: "POST", 
-                    // body: {
-                    //      "magnetIdeas": res,
-                    //     "userId": userId
-                    // }
-        //         })
-        //     })
-        // })
-        // fetch("/api/send-pdf/upload-pdf", {
-        //     method: "POST",
-        //     body: {
-        //         "userId": leadDetails["userId"]
-        //     }
-        // })
-        // .then((response) => {
-        //     if (!response.ok) {
-        //         throw new Error('File not Uploaded');
-        //     }
-        //     else {
-        //         fetch("/api/send-pdf/send-email", {
-        //             method: "POST",
-        //             body: {
-        //                 "userId": leadDetails["userId"],
-        //                 "userEmail": leadDetails["emails"]
-        //             }
-        //         })
-        //     }
-        // })
-        try{
-            fetch("api/send-pdf/create-pdf", {
+		try {
+			return JSON.parse(res);
+		} catch (error) {
+			// console.log(res)
+			res = `${res}`;
+			const regex = /{[\s\S]*?}/;
+			// console.log(res)
+			const matches = res.match(regex);
+			// console.log(matches)
+			if (matches && matches.length > 0) {
+				try {
+					const dict = JSON.parse(matches[0]);
+					return dict;
+				} catch (e) {
+					console.error("Error parsing dictionary:", e);
+				}
+			}
+
+			return null;
+		}
+	};
+
+    /* const processBusinessDetails = async (leadDetails) => {
+
+        const businessDetails = userInput.current?.value
+
+        const formattedLeadName = leadDetails["name"].replace(/\s/g, "_").toLowerCase();
+        try {
+            const leadProblemsResponse = await fetch("/api/leadProblems", {
+                method: "POST",
+                body: JSON.stringify(businessDetails),
+            })
+            console.log("Audience Problems Generated ", leadProblemsResponse.ok)
+
+            if (!leadProblemsResponse.ok) {
+                throw new Error("Failed to generate lead problems");
+            }
+
+            const leadProblems = await leadProblemsResponse.json()
+
+            console.log(leadProblems)
+
+            const leadMagnetIdeasResponse = await fetch("/api/leadGenIdeas", {
+                method: "POST",
+                body: JSON.stringify(leadProblems),
+            })
+
+            if (!leadMagnetIdeasResponse.ok) {
+                throw new Error("Failed to generate lead magnet ideas");
+            }
+            console.log("Lead Magnet Ideas Generated")
+
+            let leadMagnetIdeas = await leadMagnetIdeasResponse.json()
+            leadMagnetIdeas = formatResponse(leadMagnetIdeas)
+            
+            const createPdfResponse = await fetch("api/send-pdf/create-pdf", {
+                method: "POST",
+                body: JSON.stringify({
+                    username: formattedLeadName,
+                    magnetIdeas: leadMagnetIdeas,
+                }),
+            });
+    
+            if (!createPdfResponse.ok) {
+                throw new Error("Failed to create PDF");
+            }
+    
+            const createPdfData = await createPdfResponse.json();
+    
+            if (createPdfData.pdfPath) {
+                const uploadPdfResponse = await fetch("api/send-pdf/upload-pdf", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        username: formattedLeadName,
+                        pdfPath: createPdfData.pdfPath,
+                    }),
+                });
+    
+                if (!uploadPdfResponse.ok) {
+                    throw new Error("Failed to upload PDF");
+                }
+    
+                const uploadPdfData = await uploadPdfResponse.json();
+                console.log(uploadPdfData);
+    
+                const sendEmailResponse = await fetch("/api/send-pdf/send-email", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        username: formattedLeadName,
+                        userEmail: leadDetails.emails,
+                        userId: leadDetails.userId,
+                    }),
+                });
+    
+                if (!sendEmailResponse.ok) {
+                    throw new Error("Failed to send email");
+                }
+    
+                console.log("Success: Email sent successfully");
+            }
+        } catch (error) {
+            console.log(error)
+            console.error("Error processing business details:", error.message);
+            // Handle error here, show an error message to the user, etc.
+        }
+    }; */
+
+    const processBusinessDetails = async (leadDetails, userInput) => {
+        const response = await fetch("/api/processBusinessDetails", {
             method: "POST",
             body: JSON.stringify({
-                "username": formattedLeadName,
-                "magnetIdeas": details
-            })
-            })
-            .then(async (res) => {
-                res = await res.json()
-                return res
-            })
-            .then((res) => {
-                // console.log(res)
-                if (res?.pdfPath) {
-                    fetch("api/send-pdf/upload-pdf", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            "username": formattedLeadName,
-                            "pdfPath": res["pdfPath"],
-                        })
-                    })
-                    .then(async (res) => {
-                        res = await res.json()
-                        return res
-                    })
-                    .then((res) => {
-                        console.log(res)
-                        // console.log("RES had issue")
-                    })
-                    .then(() => {
-                        fetch("/api/send-pdf/send-email", {
-                            method: "POST",
-                            body: JSON.stringify({
-                                "username": formattedLeadName,
-                                "userEmail": leadDetails["emails"],
-                                "userId": leadDetails["userId"]
-                            })
-                        })
-                    })
-                    .then(() => console.log("Success"))
-                }
-            })
-            /* */
-        }
-        catch (err) {
-            // console.log(err)
-        }
-        
+                "leadDetails": leadDetails,
+                "userInput": userInput.current?.value
+            }),
+        });
+        const responseData = await response.json()
+        console.log(responseData)
+        // router.push("https://bigbusiness.diemmo.com/thank-you")
     }
 
     const handleSubmit = async (e) => {
@@ -175,25 +145,27 @@ const OptInPage = () => {
 			setDisplayPopupForm(true);
 		} else {
             console.log(leadDetails)
-            processBusinessDetails(leadDetails["name"])
+            if (userInput.current?.value) {
+                processBusinessDetails(leadDetails, userInput)     
+            }
         }
         
     }
 
     useEffect(() => {
-        console.log(leadDetails)
-        if (Object.keys(leadDetails) > 0) {
-            processBusinessDetails(leadDetails["name"])
+        console.log(userInput.current?.value)
+        if (userInput.current?.value){
+            if (leadDetails && Object.keys(leadDetails).length > 0) {
+                processBusinessDetails(leadDetails, userInput);
+            }
         }
-    }, [leadDetails])
+    }, [leadDetails, userInput.current?.value])
     
 	useEffect(() => {
-        console.log("Test")
 		const leadInfo = JSON.parse(localStorage.getItem('LGAI-LeadInfo'));
-        console.log(leadInfo)
+        console.log(userInput.current?.value)
 		// const leadInfo = false;
 		if (leadInfo) {
-            console.log(leadInfo)
 			setIsLeadInfoGiven(true);
             setLeadDetails(leadInfo);
 		}
@@ -264,3 +236,4 @@ const OptInPage = () => {
 }
 
 export default OptInPage
+

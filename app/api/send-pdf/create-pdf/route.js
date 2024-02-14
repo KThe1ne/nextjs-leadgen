@@ -3,20 +3,20 @@ import { leadGenPDF } from "./createPDF.js";
 
 export async function POST(req) {
 
-    console.log("Create PDF")
-    // console.log(req.json())
+    console.log("Create PDF");
+
     const requestData = await req?.json();
-    let pdfPath
+    let pdfPath;
+
     try {
+
         pdfPath = await leadGenPDF(requestData);
-        // console.log(pdfPath)
-    } catch (err) {
-        // console.log(err)
-        // console.error(err)
-        return NextResponse.json({status: 400})
+        return NextResponse.json({ pdfPath });
+
+    } catch (error) {
+
+        console.error("Error creating PDF:", error);
+        return NextResponse.json({ error: 'PDF creation failed' }, { status: 400 });
+        
     }
-
-
-
-    return NextResponse.json({"pdfPath": pdfPath}); 
 }
