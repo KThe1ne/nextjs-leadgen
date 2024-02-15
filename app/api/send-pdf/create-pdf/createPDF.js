@@ -5,7 +5,7 @@ const path = require('path');
 
 export const leadGenPDF = async ({ username, magnetIdeas }) => {
     return new Promise ((resolve, reject) => {
-        const doc = new PDFDocument({ size: 'A4', font: "https://leadgen.diemmo.com/public/fonts/Montserrat-Regular.otf" });
+        const doc = new PDFDocument({ size: 'A4', font: "/fonts/Montserrat-Regular.otf" });
         const outputPath = `./public/temp/${username}.pdf`
         const writeStream = fs.createWriteStream(outputPath);
 
@@ -21,9 +21,9 @@ export const leadGenPDF = async ({ username, magnetIdeas }) => {
 
         // Register fonts
         try {
-            doc.registerFont('Bold', '/public/fonts/Montserrat-Bold.otf');
-            doc.registerFont('Regular', '/public/fonts/Montserrat-Regular.otf');
-            doc.registerFont('Medium', '/public/fonts/Montserrat-Medium.otf');
+            doc.registerFont('Bold', './public/fonts/Montserrat-Bold.otf');
+            doc.registerFont('Regular', './public/fonts/Montserrat-Regular.otf');
+            doc.registerFont('Medium', './public/fonts/Montserrat-Medium.otf');
         } catch (error) {
             console.error('Error registering fonts:', error);
             // Handle font registration errors or fallback to default
