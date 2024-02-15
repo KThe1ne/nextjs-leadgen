@@ -127,11 +127,14 @@ const OptInPage = () => {
     }; */
 
     const processBusinessDetails = async (leadDetails, userInput) => {
-        const response = await fetch("/api/processBusinessDetails", {
+        const response = await fetch("https://hook.us1.make.com/wkmbid4pb5xeb1v94k6iir7p914ckomi", {
             method: "POST",
+            headers: {
+                'Content-Type': 'application/json', // Set the content type to application/json
+            },
             body: JSON.stringify({
-                "leadDetails": leadDetails,
-                "userInput": userInput.current?.value
+                "leadDetails": leadDetails, // Assuming leadDetails is correctly formatted
+                "userInput": userInput.current?.value // Ensure this value is not undefined
             }),
         });
         const responseData = await response.json()
