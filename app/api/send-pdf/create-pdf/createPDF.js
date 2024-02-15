@@ -5,7 +5,7 @@ const path = require('path');
 
 export const leadGenPDF = async ({ username, magnetIdeas }) => {
     return new Promise ((resolve, reject) => {
-        const doc = new PDFDocument({ size: 'A4', font: "./fonts/Montserrat-Regular.otf" });
+        const doc = new PDFDocument({ size: 'A4', font: "https://leadgen.diemmo.com/fonts/Montserrat-Regular.otf" });
         const outputPath = `./public/temp/${username}.pdf`
         const writeStream = fs.createWriteStream(outputPath);
 
