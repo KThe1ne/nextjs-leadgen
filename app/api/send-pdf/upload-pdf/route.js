@@ -16,11 +16,14 @@ import axios from 'axios';
 export async function POST(req) {
     console.log("Uploading PDF");
     const requestData = await req?.json();
-    const pdfPath = requestData["pdfPath"];
-    const username = requestData["username"];
+    // const pdfPath = requestData["pdfPath"];
+    // const username = requestData["username"];
+    const pdfBlob = requestData["pdfBlob"]
+    const fileName = requestData["fileName"]
     const url = 'https://services.leadconnectorhq.com/medias/upload-file';
     const form = new FormData();
-    form.append('file', fs.createReadStream(pdfPath));
+    // form.append('file', fs.createReadStream(pdfPath));
+    form.append('file', pdfBlob);
     form.append('hosted', 'false');
     form.append('name', `${username}.pdf`);
 

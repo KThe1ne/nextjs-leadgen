@@ -69,3 +69,5 @@ export const leadGenPDF = async ({ username, magnetIdeas }) => {
         doc.end();
     })
 };
+
+
