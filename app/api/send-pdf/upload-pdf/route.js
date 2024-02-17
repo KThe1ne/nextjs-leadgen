@@ -36,12 +36,12 @@ export async function POST(req) {
     
     
     
-    const requestData = await req?.json();
+    // const requestData = await req?.json();
     // const pdfPath = requestData["pdfPath"];
     // const username = requestData["username"];
     console.log(requestData)
-    const pdfBlob = requestData["pdfBlob"]
-    const fileName = requestData["fileName"]
+    const pdfBlob = reqBody["pdfBlob"]
+    const fileName = reqBody["fileName"]
     const url = 'https://services.leadconnectorhq.com/medias/upload-file';
     const form = new FormData();
     // form.append('file', fs.createReadStream(pdfPath));
