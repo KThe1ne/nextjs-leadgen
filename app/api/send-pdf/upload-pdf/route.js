@@ -15,6 +15,7 @@ import axios from 'axios';
 
 export async function POST(req) {
     console.log("Uploading PDF");
+    console.log(requestData)
     const requestData = await req?.json();
     // const pdfPath = requestData["pdfPath"];
     // const username = requestData["username"];
@@ -25,7 +26,7 @@ export async function POST(req) {
     // form.append('file', fs.createReadStream(pdfPath));
     form.append('file', pdfBlob);
     form.append('hosted', 'false');
-    form.append('name', `${username}.pdf`);
+    form.append('name', `${fileName}.pdf`);
 
     const options = {
         headers: {
@@ -39,13 +40,13 @@ export async function POST(req) {
     try {
         const response = await axios.post(url, form, options);
         console.log("Upload successful:", response.data);
-        fs.unlink(pdfPath, (err) => {
-            if (err) {
-                console.error("Error deleting file:", err);
-            } else {
-                console.log("File deleted successfully");
-            }
-        });
+        // fs.unlink(pdfPath, (err) => {
+        //     if (err) {
+        //         console.error("Error deleting file:", err);
+        //     } else {
+        //         console.log("File deleted successfully");
+        //     }
+        // });
         return NextResponse.json(response.data);
     } catch (error) {
         console.error("Error uploading PDF:", error);
