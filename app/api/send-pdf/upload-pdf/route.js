@@ -59,7 +59,8 @@ export async function POST(req) {
     const url = 'https://services.leadconnectorhq.com/medias/upload-file';
     const form = new FormData();
     // form.append('file', fs.createReadStream("pdfPath"));
-    form.append('file', pdfBlob);
+    // form.append('file', pdfBlob);
+    form.append('file', "https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F2%2F2f%2FGoogle_2015_logo.svg%2F800px-Google_2015_logo.svg.png&tbnid=bpyjzUSK7nRmrM&vet=12ahUKEwjy4KbwnbOEAxUKobAFHdCbDj0QMygAegQIARB0..i&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FGoogle_logo&docid=YYcJ4Dx_qJL9iM&w=800&h=271&q=google&ved=2ahUKEwjy4KbwnbOEAxUKobAFHdCbDj0QMygAegQIARB0");
     form.append('hosted', 'false');
     form.append('name', `${fileName}.pdf`);
 
