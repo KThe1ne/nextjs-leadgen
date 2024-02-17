@@ -28,6 +28,8 @@ export async function POST(req) {
     try {
         reqText = await req.text()
         console.log("reqText ", reqText)
+        reqText = JSON.parse(reqText)
+        console.log("reqText ", reqText)
     } catch (error) {
         console.log("reqText ", error)
     }
