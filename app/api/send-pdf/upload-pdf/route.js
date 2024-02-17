@@ -20,6 +20,12 @@ let requestData
 export async function POST(req) {
     console.log("Uploading PDF");
     try {
+        requestData = await req?.json();
+        console.log("requestData ",requestData)
+    } catch (error) {
+        console.log("requestData ", error)
+    }
+    try {
         reqText = await req.text()
         console.log("reqText ", reqText)
     } catch (error) {
@@ -37,12 +43,6 @@ export async function POST(req) {
     } catch (error) {
         console.log("reqParse ", error)
     }
-    try {
-        requestData = await req?.json();
-        console.log("requestData ",requestData)
-    } catch (error) {
-        console.log("requestData ", error)
-    }
     
     
     
@@ -51,7 +51,9 @@ export async function POST(req) {
     // const username = requestData["username"];
     // console.log(requestData)
     const pdfBlob = reqText["pdfBlob"]
+    console.log(pdfBlob)
     const fileName = reqText["fileName"]
+    console.log(fileName)
     const url = 'https://services.leadconnectorhq.com/medias/upload-file';
     const form = new FormData();
     // form.append('file', fs.createReadStream(pdfPath));
@@ -69,6 +71,7 @@ export async function POST(req) {
     };
 
     try {
+        console.log("Making Request")
         const response = await axios.post(url, form, options);
         console.log("Upload successful:", response.data);
         // fs.unlink(pdfPath, (err) => {
