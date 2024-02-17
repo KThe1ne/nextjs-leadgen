@@ -19,12 +19,12 @@ let requestData
 
 export async function POST(req) {
     console.log("Uploading PDF");
-    try {
+    /* try {
         requestData = await req?.json();
         console.log("requestData ",requestData)
     } catch (error) {
         console.log("requestData ", error)
-    }
+    } */
     try {
         reqText = await req.text()
         console.log("reqText ", reqText)
