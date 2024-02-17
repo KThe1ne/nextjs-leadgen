@@ -15,6 +15,27 @@ import axios from 'axios';
 
 export async function POST(req) {
     console.log("Uploading PDF");
+    try {
+        const reqText = req.text()
+        console.log("reqText ", reqText)
+    } catch (error) {
+        console.log("reqText ", error)
+    }
+    try {
+        const reqBody = req.body
+        console.log("reqBody ", reqBody)
+    } catch (error) {
+        console.log("reqBody ",error)
+    }
+    try {
+        const reqParse = JSON.parse(req)
+        console.log("reqParse ",reqParse)
+    } catch (error) {
+        console.log("reqParse ", error)
+    }
+    
+    
+    
     const requestData = await req?.json();
     // const pdfPath = requestData["pdfPath"];
     // const username = requestData["username"];
