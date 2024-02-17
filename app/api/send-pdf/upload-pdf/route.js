@@ -15,7 +15,7 @@ import axios from 'axios';
 
 export async function POST(req) {
     console.log("Uploading PDF");
-    console.log(requestData)
+    console.log(JSON.parse(requestData))
     const requestData = await req?.json();
     // const pdfPath = requestData["pdfPath"];
     // const username = requestData["username"];
