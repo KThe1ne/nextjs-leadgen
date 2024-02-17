@@ -16,7 +16,7 @@ import axios from 'axios';
 export async function POST(req) {
     console.log("Uploading PDF");
     try {
-        const reqText = req.text()
+        const reqText = await req.text()
         console.log("reqText ", reqText)
     } catch (error) {
         console.log("reqText ", error)
