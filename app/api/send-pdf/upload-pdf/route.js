@@ -12,26 +12,36 @@ import fs from 'fs';
 import FormData from "form-data";
 import axios from 'axios';
 
+let reqText
+let reqBody
+let reqParse
+let requestData
 
 export async function POST(req) {
     console.log("Uploading PDF");
     try {
-        const reqText = await req.text()
+        reqText = await req.text()
         console.log("reqText ", reqText)
     } catch (error) {
         console.log("reqText ", error)
     }
     try {
-        const reqBody = req.body
+        reqBody = req.body
         console.log("reqBody ", reqBody)
     } catch (error) {
         console.log("reqBody ",error)
     }
     try {
-        const reqParse = JSON.parse(req)
+        reqParse = JSON.parse(req)
         console.log("reqParse ",reqParse)
     } catch (error) {
         console.log("reqParse ", error)
+    }
+    try {
+        requestData = await req?.json();
+        console.log("requestData ",requestData)
+    } catch (error) {
+        console.log("requestData ", error)
     }
     
     
