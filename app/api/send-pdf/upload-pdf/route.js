@@ -58,8 +58,8 @@ export async function POST(req) {
     console.log(fileName)
     const url = 'https://services.leadconnectorhq.com/medias/upload-file';
     const form = new FormData();
-    // form.append('file', fs.createReadStream(pdfPath));
-    form.append('file', pdfBlob);
+    form.append('file', fs.createReadStream("https://storage.googleapis.com/msgsndr/q2F8nQU6MwShtOql24uK/media/54de2fc2-41e3-40e9-8e58-7c2e53dde28d.pdf"));
+    // form.append('file', pdfBlob);
     form.append('hosted', 'false');
     form.append('name', `${fileName}.pdf`);
 
