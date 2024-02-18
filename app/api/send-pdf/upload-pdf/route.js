@@ -14,9 +14,6 @@ import axios from 'axios';
 import { constants } from 'buffer';
 
 let reqText
-let reqBody
-let reqParse
-let requestData
 
 export async function POST(req) {
     console.log("Uploading PDF");
@@ -34,27 +31,8 @@ export async function POST(req) {
     } catch (error) {
         console.log("reqText ", error)
     }
-    /* try {
-        reqBody = req.body
-        console.log("reqBody ", reqBody)
-    } catch (error) {
-        console.log("reqBody ",error)
-    }
-    try {
-        reqParse = JSON.parse(req)
-        console.log("reqParse ",reqParse)
-    } catch (error) {
-        console.log("reqParse ", error)
-    } */
     
-    
-    
-    // const requestData = await req?.json();
-    // const pdfPath = requestData["pdfPath"];
-    // const username = requestData["username"];
-    // console.log(requestData)
 
-    //! Important
     const pdfBlob = reqText["pdfBlob"]
     console.log(pdfBlob)
     const fileName = reqText["fileName"]
@@ -102,54 +80,7 @@ export async function POST(req) {
     }
 
     
-    // form.append('file', fs.createReadStream("pdfPath"));
-    // form.append('file', pdfBlob);
-    // const buffer = await fs.readFile("./public/busi.pdf")
-    // fs.readFile("./public/busi.pdf", async (err, buffer1) => {
-
-    //     if (err) {
-    //       console.error("Error reading the file:", err);
-    //       return;
-    //     }
-
-
-        
-    // })
-    // console.log(buffer1)
-    // form.append('file', buffer1);
-    // form.append('hosted', 'false');
-    // // form.append('name', `${fileName}.pdf`);
-    // form.append('name', `test.pdf`);
-
-
-    // const options = {
-    //     headers: {
-    //         Authorization: `Bearer ${process.env.GHL_AUTH_CODE}`,
-    //         Accept: 'application/json',
-    //         'Content-Type': 'multipart/form-data',
-    //         Version: '2021-07-28',
-    //     }
-    // };
-
-    // try {
-    //     console.log("Making Request")
-    //     const response = await axios.post(url, form, options);
-    //     console.log("Upload successful:", response.data);
-    //     // fs.unlink(pdfPath, (err) => {
-    //     //     if (err) {
-    //     //         console.error("Error deleting file:", err);
-    //     //     } else {
-    //     //         console.log("File deleted successfully");
-    //     //     }
-    //     // });
-    //     return NextResponse.json(response.data);
-    // } catch (error) {
-    //     console.error("Error uploading PDF:", error);
-    //     if (error.response) {
-    //         console.error("Response data:", error.response.data);
-    //     }
-    //     return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
-    // }
+    
 
     
     
