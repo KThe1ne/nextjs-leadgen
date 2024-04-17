@@ -49,6 +49,7 @@ const PopUpForm = ({ setIsLeadInfoGiven, isLeadInfoGiven, setLeadDetails=false }
 		})
 		.then((res) => res.json())
 		.then((res) => {
+			console.log(res)
 			data["userId"] = res?.contact["id"];
 			if (setLeadDetails !== false) {
 				console.log(data)
